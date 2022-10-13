@@ -25,6 +25,10 @@ public abstract class SingleTicket extends Ticket {
         return ticketType;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
     @Override
     public String toString() {
         return "SingleTicket{" +
