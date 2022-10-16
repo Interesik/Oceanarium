@@ -1,18 +1,20 @@
 package org.nbd.entities;
 
-import org.example.model.Client;
-import org.example.model.Ticket;
-
+import javax.persistence.*;
 import java.util.Date;
 
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Access(AccessType.FIELD)
 public abstract class SingleTicket extends Ticket {
 
-    enum TicketType{normal, cityCard, charity};
+    public enum TicketType{normal, cityCard, charity}
     private TicketType ticketType;
-    org.nbd.entities.Client client;
+    @OneToOne
+    private Client client;
 
-    public SingleTicket(Date visitDate, Integer basePrice, int ticketID, TicketType ticketType, org.example.model.Client client) {
-        super(visitDate, basePrice, ticketID);
+    public SingleTicket(Date visitDate, Float basePrice, TicketType ticketType, org.nbd.entities.Client client) {
+        super(basePrice,visitDate);
         this.ticketType = ticketType;
         this.client = client;
     }
@@ -37,10 +39,9 @@ public abstract class SingleTicket extends Ticket {
         return "SingleTicket{" +
                 "ticketType=" + ticketType +
                 ", client=" + client +
-                ", visitDate=" + visitDate +
+                ", visitDate=" + getVisitDate() +
                 ", ActualPrice=" + getActualPrice() +
-                ", ticketID=" + ticketID +
-                ", archive=" + archive +
+                ", archive=" + isArchive() +
                 '}';
     }
 }

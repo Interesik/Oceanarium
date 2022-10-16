@@ -1,26 +1,28 @@
 package org.nbd.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
-public class Ticket {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long ticketID;
-    public Float basePrice;
-    public Date visitDate;
-
-    public Ticket() {
-    }
+    private UUID ticketID; // TODO: Wykorzystać klase UUID zamias long
+    private Float basePrice;
+    private Date visitDate;
+    private boolean archive;
 
     public Ticket(Float basePrice, Date visitDate) {
         this.basePrice = basePrice;
         this.visitDate = visitDate;
+        this.archive = false;
+    }
+    //Potrzebne przy wyczytywaniu z bazy danych wartości
+    protected Ticket() {
+
     }
 
     public Float getBasePrice() {
@@ -35,11 +37,21 @@ public class Ticket {
         return visitDate;
     }
 
+    public boolean isArchive() {
+        return archive;
+    }
+
+    public void setArchive(boolean archive) {
+        this.archive = archive;
+    }
+
     public void setVisitDate(Date visitDate) {
         this.visitDate = visitDate;
     }
 
-    public long getTicketID() {
+    public UUID getTicketID() {
         return ticketID;
     }
+
+    public abstract double getActualPrice();
 }

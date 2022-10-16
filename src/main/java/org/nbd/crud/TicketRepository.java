@@ -1,5 +1,7 @@
 package org.nbd.crud;
 
+import org.nbd.entities.SeniorTicket;
+import org.nbd.entities.SingleTicket;
 import org.nbd.entities.Ticket;
 
 import javax.persistence.EntityManager;
@@ -11,13 +13,14 @@ import java.util.Date;
 public class TicketRepository {
 
     private static EntityManagerFactory factory = Persistence.createEntityManagerFactory("thePersistenceUnit");
+    // krzyczy że oba Entity mogą być final
     private static EntityManager em  = factory.createEntityManager();
 
     private EntityTransaction transaction;
 
-    public void createNewTicket (Float basePrice, Date visitDate) {
-
-        Ticket newTicket = new Ticket(basePrice, visitDate);
+    // czy wykonujemy dla każdego rodzaju biletu odzielną transakcje
+    public void createNewSeniorTicket (Float basePrice, Date visitDate, SingleTicket.TicketType ticketType, org.nbd.entities.Client client) {
+        Ticket newTicket = new SeniorTicket(visitDate,basePrice,ticketType,client);
         transaction = em.getTransaction();
 
         transaction.begin();

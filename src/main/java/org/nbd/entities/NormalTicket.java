@@ -1,12 +1,9 @@
 package org.nbd.entities;
-
-import org.example.model.Client;
-
 import java.util.Date;
 
 public class NormalTicket extends SingleTicket{
-    public NormalTicket(Date visitDate, Integer basePrice, int ticketID, TicketType ticketType, Client client) {
-        super(visitDate, basePrice, ticketID, ticketType, client);
+    public NormalTicket(Date visitDate, float basePrice, TicketType ticketType, Client client) {
+        super(visitDate, basePrice, ticketType, client);
     }
 
     @Override

@@ -1,12 +1,10 @@
 package org.nbd.entities;
 
-import org.example.model.Client;
-
 import java.util.Date;
 
 public class SeniorTicket extends SingleTicket{
-    public SeniorTicket(Date visitDate, Integer basePrice, int ticketID, TicketType ticketType, Client client) {
-        super(visitDate, basePrice, ticketID, ticketType, client);
+    public SeniorTicket(Date visitDate, float basePrice, TicketType ticketType, Client client) {
+        super(visitDate, basePrice, ticketType, client);
     }
 
     @Override
