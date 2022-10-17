@@ -11,9 +11,9 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long ticketID;
-    public Float basePrice;
-    public Date visitDate;
+    private int ticketID;
+    private Float basePrice;
+    private Date visitDate;
 
     public Ticket() {
     }

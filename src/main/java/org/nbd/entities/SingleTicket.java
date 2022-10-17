@@ -1,25 +1,22 @@
 package org.nbd.entities;
 
-import org.example.model.Client;
-import org.example.model.Ticket;
+import org.nbd.utils.TicketType;
 
 import java.util.Date;
 
 public abstract class SingleTicket extends Ticket {
 
-    enum TicketType{normal, cityCard, charity};
-    private TicketType ticketType;
-    org.nbd.entities.Client client;
+    private final TicketType ticketType;
+    private final Client client;
 
-    public SingleTicket(Date visitDate, Integer basePrice, int ticketID, TicketType ticketType, org.example.model.Client client) {
-        super(visitDate, basePrice, ticketID);
+    public SingleTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
+        super(basePrice, visitDate);
         this.ticketType = ticketType;
         this.client = client;
     }
 
     public abstract double applyDiscount(double basePrice);
 
-    @Override
     public double getActualPrice() {
         return applyDiscount(getBasePrice());
     }
@@ -37,10 +34,9 @@ public abstract class SingleTicket extends Ticket {
         return "SingleTicket{" +
                 "ticketType=" + ticketType +
                 ", client=" + client +
-                ", visitDate=" + visitDate +
+                ", visitDate=" + getVisitDate() +
                 ", ActualPrice=" + getActualPrice() +
-                ", ticketID=" + ticketID +
-                ", archive=" + archive +
+                ", ticketID=" + getTicketID() +
                 '}';
     }
 }

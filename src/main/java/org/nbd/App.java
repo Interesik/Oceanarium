@@ -1,19 +1,25 @@
 package org.nbd;
 
-import org.checkerframework.checker.units.qual.C;
-import org.nbd.crud.ClientRepository;
+import org.nbd.dao.ClientDao;
 import org.nbd.entities.Client;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.Calendar;
 import java.util.Date;
 
 public class App {
 
+    private static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("thePersistenceUnit");
+    private static final EntityManager em  = factory.createEntityManager();
+
     public static void main(String[] args) {
-        ClientRepository clientRepository = new ClientRepository();
-        clientRepository.createNewClient("Olek", "Kobusinski", new Date(1992, 5, 16));
-        Client client = clientRepository.findById(1);
+        ClientDao clientDao = new ClientDao(em);
+        clientDao.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16));
+        Client client = clientDao.read(1);
         System.out.println(client.getPersonalID());
-        clientRepository.updateFirstName(client, "Aleksander");
-        clientRepository.delete(client);
+        clientDao.updateFirstName(client, "Aleksander");
+        clientDao.delete(client);
     }
 }

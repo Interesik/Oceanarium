@@ -1,33 +1,29 @@
 package org.nbd.entities;
 
-import org.example.model.Client;
-import org.example.model.Ticket;
-
 import java.util.Date;
 import java.util.List;
 
 public abstract class GroupTicket extends Ticket {
-    List<org.example.model.Client> Clients;
+    private final List<Client> clients;
 
-    public GroupTicket(Date visitDate, Integer basePrice, int ticketID, List<Client> clients) {
-        super(visitDate, basePrice, ticketID);
-        Clients = clients;
+    public GroupTicket(Float basePrice, Date visitDate, List<Client> clients) {
+        super(basePrice, visitDate);
+        this.clients = clients;
     }
 
-    @Override
     public double getActualPrice() {
-        return Clients.size() * applyDiscount(getBasePrice());
+        return clients.size() * applyDiscount(getBasePrice());
     }
+
     public abstract double applyDiscount(double basePrice);
 
     @Override
     public String toString() {
         return "GroupTicekt{" +
-                "Clients=" + Clients +
-                ", visitDate=" + visitDate +
+                "clients=" + clients +
+                ", visitDate=" + getVisitDate() +
                 ", ActualPrice=" + getActualPrice() +
-                ", ticketID=" + ticketID +
-                ", archive=" + archive +
+                ", ticketID=" + getTicketID() +
                 '}';
     }
 }
