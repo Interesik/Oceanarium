@@ -4,8 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 public class NormalGroupTicket extends GroupTicket{
-    public NormalGroupTicket(Date visitDate, float basePrice, List<Client> clients) {
-        super(visitDate,basePrice, clients);
+    public NormalGroupTicket(Date visitDate, Float basePrice, List<Client> clients) {
+        super(basePrice, visitDate, clients);
     }
 
     @Override

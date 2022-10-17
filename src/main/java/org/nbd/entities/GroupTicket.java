@@ -1,29 +1,29 @@
 package org.nbd.entities;
 
-import javax.persistence.ManyToOne;
 import java.util.Date;
 import java.util.List;
 
 public abstract class GroupTicket extends Ticket {
+    private final List<Client> clients;
 
-    @ManyToOne
-    List<Client> Clients;
-
-    public GroupTicket(Date visitDate, Float basePrice, List<Client> clients) {
-        super(basePrice,visitDate);
-        this.Clients = clients;
+    public GroupTicket(Float basePrice, Date visitDate, List<Client> clients) {
+        super(basePrice, visitDate);
+        this.clients = clients;
     }
 
-    @Override
     public double getActualPrice() {
-        return Clients.size() * applyDiscount(getBasePrice());
+        return clients.size() * applyDiscount(getBasePrice());
     }
+
     public abstract double applyDiscount(double basePrice);
 
-    @Override //TODO: zrobić poprawnie toString
+    @Override
     public String toString() {
-        return "GroupTicket{" +
-                "Clients=" + Clients +
+        return "GroupTicekt{" +
+                "clients=" + clients +
+                ", visitDate=" + getVisitDate() +
+                ", ActualPrice=" + getActualPrice() +
+                ", ticketID=" + getTicketID() +
                 '}';
     }
 }

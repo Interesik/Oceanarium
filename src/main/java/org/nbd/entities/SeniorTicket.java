@@ -1,23 +1,21 @@
 package org.nbd.entities;
 
+import org.nbd.utils.TicketType;
+
 import java.util.Date;
 
-public class SeniorTicket extends SingleTicket{
-    public SeniorTicket(Date visitDate, float basePrice, TicketType ticketType, Client client) {
+public class SeniorTicket extends SingleTicket {
+    public SeniorTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
         super(visitDate, basePrice, ticketType, client);
     }
 
     @Override
     public double applyDiscount(double basePrice) {
         basePrice *= 0.8;
-        switch (getTicketType()) {
-            case normal:
-                return basePrice;
-            case cityCard:
-                return basePrice * 0.6;
-            case charity:
-                return basePrice + 1;
-        }
-        return basePrice;
+        return switch (getTicketType()) {
+            case NORMAL -> basePrice;
+            case CITY_CARD -> basePrice * 0.6;
+            case CHARITY -> basePrice + 1;
+        };
     }
 }
