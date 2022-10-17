@@ -1,5 +1,7 @@
 package org.nbd.entities;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,13 +9,15 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Client {
+public class Client extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long personalID;
     public String firstName;
+    @NotNull
     public String lastName;
+    @NotNull
     public Date birthdayDate;
 
     public Client() {
