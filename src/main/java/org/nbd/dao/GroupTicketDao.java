@@ -46,7 +46,7 @@ public class GroupTicketDao implements Dao<GroupTicket> {
         em.remove(obj);
         transaction.commit();
     }
-    public void createNewGroupTicket(Float basePrice, Date visitDate, ClientType clientType, List<Client> clients) {
+    public void createNewGroupTicket(Float basePrice, Date visitDate, ClientType clientType,List<Client> clients) {
         GroupTicket newTicket;
         switch (clientType) {
             case NORMAL:
@@ -69,5 +69,7 @@ public class GroupTicketDao implements Dao<GroupTicket> {
         update(() -> ticket.setVisitDate(date));
     }
 
-    public void updateClients(GroupTicket ticket,Client client){update(()->ticket.);}
+    public void updateAddClient(GroupTicket ticket,Client client){update(()->ticket.addClient(client));}
+
+    public void updateRemoveClient(GroupTicket ticket,Client client){update(()->ticket.getClients().remove(client));}
 }

@@ -3,6 +3,7 @@ package org.nbd;
 import org.nbd.dao.ClientDao;
 import org.nbd.dao.TicketDao;
 import org.nbd.entities.Client;
+import org.nbd.utils.ClientType;
 
 
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ public class App {
     public static void main(String[] args) {
         ClientDao clientDao = new ClientDao(em);
         TicketDao ticketDao = new TicketDao(em);
-        clientDao.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16));
+        clientDao.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16), ClientType.STUDENT);
         Client client = clientDao.read(1);
         System.out.println(client.getPersonalID());
         Date d1 = new Date("10/20/2020");

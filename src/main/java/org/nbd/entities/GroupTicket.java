@@ -22,6 +22,11 @@ public abstract class GroupTicket extends Ticket {
 
     }
 
+    public List<Client> getClients() {
+        return clients;
+    }
+    public abstract void addClient(Client newClient);
+
     public double getActualPrice() {
         return clients.size() * applyDiscount(getBasePrice());
     }
