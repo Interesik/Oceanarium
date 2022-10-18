@@ -3,7 +3,7 @@ package org.nbd.entities;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Ticket {
 

@@ -1,6 +1,7 @@
 package org.nbd.entities;
 
 import com.sun.istack.NotNull;
+import org.nbd.utils.TicketType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 @Entity
 public class Client extends AbstractEntity{
 
+    private TicketType ticketType;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long personalID;
