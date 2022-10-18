@@ -1,29 +1,44 @@
 package org.nbd.entities;
 
-import java.util.Date;
+import org.nbd.utils.TicketTypeEnum.TicketSubtype;
+
 import java.util.List;
 
-public abstract class GroupTicket extends Ticket {
-    private final List<Client> clients;
+public class GroupTicket extends Ticket implements Discount {
 
-    public GroupTicket(Float basePrice, Date visitDate, List<Client> clients) {
-        super(basePrice, visitDate);
-        this.clients = clients;
-    }
+    final double basePrice = getBasePrice();
+    final List<Client> clientList = getClients();
+    final TicketSubtype ticketSubtype = getTicketSubtype();
 
     public double getActualPrice() {
-        return clients.size() * applyDiscount(getBasePrice());
+        return clientList.size() * applyDiscount();
     }
 
-    public abstract double applyDiscount(double basePrice);
+    @Override
+    public double applyDiscount() {
+
+        if (ticketSubtype == TicketSubtype.REDUCED) {
+            return basePrice * 0.5;
+        } else {
+            return basePrice;
+        }
+    }
 
     @Override
     public String toString() {
-        return "GroupTicekt{" +
-                "clients=" + clients +
-                ", visitDate=" + getVisitDate() +
-                ", ActualPrice=" + getActualPrice() +
-                ", ticketID=" + getTicketID() +
+
+        String clientsNamesList = "";
+        for (int i = 0; i < clientList.size(); i++) {
+            clientsNamesList += clientList.get(i).getFirstName() + " " + clientList.get(i).getLastName();
+            if (i != clientList.size() - 1) clientsNamesList += ", ";
+        }
+
+        return "GroupTicket {" +
+                " clients = " + clientsNamesList +
+                ", visit date = " + getVisitDate() +
+                ", actual price = " + getActualPrice() +
+                ", discount = " + getTicketDiscount() +
+                ", ticketID = " + getTicketID() +
                 '}';
     }
 }

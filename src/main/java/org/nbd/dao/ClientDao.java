@@ -1,8 +1,10 @@
 package org.nbd.dao;
 
 import org.nbd.entities.Client;
+import org.nbd.utils.ClientType;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.util.Date;
 
 public class ClientDao implements Dao<Client> {
@@ -37,13 +39,14 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public void delete(Client client) {
+        transaction = em.getTransaction();
         transaction.begin();
         em.remove(client);
         transaction.commit();
     }
 
-    public void createNewClient(String firstName, String lastName, Date birthdayDate) {
-        Client newClient = new Client(firstName, lastName, birthdayDate);
+    public void createNewClient(String firstName, String lastName, Date birthdayDate, ClientType clientType) {
+        Client newClient = new Client(firstName, lastName, birthdayDate, clientType);
         create(newClient);
     }
 
