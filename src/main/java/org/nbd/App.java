@@ -26,6 +26,6 @@ public class App {
         Date d1 = new Date("10/20/2020");
         clientDao.updateFirstName(client, "Aleksander");
         ticketDao.createNewTicket(10.0f,d1);
-        //clientDao.delete(client);
+        clientDao.delete(client);
     }
 }
