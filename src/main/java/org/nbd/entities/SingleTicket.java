@@ -12,7 +12,7 @@ public abstract class SingleTicket extends Ticket {
     @JoinColumn(name = "Client_ID")
     private Client client;
 
-    public SingleTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
+    public SingleTicket(Date visitDate, Float basePrice,TicketType ticketType, Client client) {
         super(basePrice, visitDate);
         this.ticketType = ticketType;
         this.client = client;
