@@ -5,7 +5,9 @@ import org.nbd.utils.TicketType;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
+@Access(AccessType.FIELD)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "Type")
 public abstract class SingleTicket extends Ticket {
     private TicketType ticketType;
     @OneToOne

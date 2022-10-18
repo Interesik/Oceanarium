@@ -17,10 +17,10 @@ public class SingleTicketDao implements Dao<SingleTicket>{
     }
 
     @Override
-    public void create(SingleTicket obj) {
+    public void create(SingleTicket ticket) {
         transaction = em.getTransaction();
         transaction.begin();
-        em.persist(obj);
+        em.persist(ticket);
         transaction.commit();
     }
 

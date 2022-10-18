@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Ticket {
 
     @Id

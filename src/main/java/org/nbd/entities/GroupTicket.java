@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 @Access(AccessType.FIELD)
 public abstract class GroupTicket extends Ticket {
     @NotNull

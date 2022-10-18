@@ -2,11 +2,18 @@ package org.nbd.entities;
 
 import org.nbd.utils.TicketType;
 
+import javax.persistence.*;
 import java.util.Date;
-
+@Entity
+@Access(AccessType.FIELD)
+@DiscriminatorValue("Student")
 public class StudentTicket extends SingleTicket {
     public StudentTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
         super(visitDate, basePrice, ticketType, client);
+    }
+
+    protected StudentTicket() {
+
     }
 
     @Override

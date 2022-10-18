@@ -4,8 +4,18 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
   <persistence-unit name="thePersistenceUnit">
-
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>org.nbd.entities.Client</class>
+    <class>org.nbd.entities.Ticket</class>
+    <class>org.nbd.entities.SingleTicket</class>
+    <class>org.nbd.entities.GroupTicket</class>
+    <class>org.nbd.entities.NormalTicket</class>
+    <class>org.nbd.entities.NormalGroupTicket</class>
+    <class>org.nbd.entities.StudentTicket</class>
+    <class>org.nbd.entities.SeniorTicket</class>
+    <class>org.nbd.entities.ReductedGroupTicket</class>
+    <class>org.nbd.entities.ReductedGroupTicket</class>
+    <class>org.nbd.entities.AbstractEntity</class>
     <properties>
       <property name="connection.driver_class" value="org.h2.Driver"/>
       <property name="hibernate.connection.url" value="jdbc:h2:./db/repository"/>
