@@ -1,16 +1,15 @@
 package org.nbd.entities;
 
 import com.sun.istack.NotNull;
+import org.nbd.utils.ClientType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Client extends AbstractEntity{
 
+    private ClientType clientType;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long personalID;
@@ -19,14 +18,14 @@ public class Client extends AbstractEntity{
     public String lastName;
     @NotNull
     public Date birthdayDate;
-
     public Client() {
     }
 
-    public Client(String firstName, String lastName, Date birthdayDate) {
+    public Client(String firstName, String lastName, Date birthdayDate,ClientType clientType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdayDate = birthdayDate;
+        this.clientType = clientType;
     }
 
     public String getFirstName() {
@@ -55,5 +54,13 @@ public class Client extends AbstractEntity{
 
     public long getPersonalID() {
         return personalID;
+    }
+
+    public ClientType getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
     }
 }

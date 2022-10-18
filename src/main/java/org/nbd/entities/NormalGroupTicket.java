@@ -12,4 +12,9 @@ public class NormalGroupTicket extends GroupTicket{
     public double applyDiscount(double basePrice) {
         return basePrice;
     }
+
+    @Override
+    public void addClient(Client newClient) {
+        getClients().add(newClient);
+    }
 }

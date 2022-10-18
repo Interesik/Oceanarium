@@ -2,17 +2,23 @@ package org.nbd.entities;
 
 import org.nbd.utils.TicketType;
 
+import javax.persistence.*;
 import java.util.Date;
-
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class SingleTicket extends Ticket {
+    private TicketType ticketType;
+    @OneToOne
+    @JoinColumn(name = "Client_ID")
+    private Client client;
 
-    private final TicketType ticketType;
-    private final Client client;
-
-    public SingleTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
+    public SingleTicket(Date visitDate, Float basePrice,TicketType ticketType, Client client) {
         super(basePrice, visitDate);
         this.ticketType = ticketType;
         this.client = client;
+    }
+    protected SingleTicket(){
+
     }
 
     public abstract double applyDiscount(double basePrice);

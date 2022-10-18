@@ -1,6 +1,7 @@
 package org.nbd.dao;
 
 import org.nbd.entities.Client;
+import org.nbd.utils.ClientType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -42,8 +43,8 @@ public class ClientDao implements Dao<Client> {
         transaction.commit();
     }
 
-    public void createNewClient(String firstName, String lastName, Date birthdayDate) {
-        Client newClient = new Client(firstName, lastName, birthdayDate);
+    public void createNewClient(String firstName, String lastName, Date birthdayDate, ClientType clientType) {
+        Client newClient = new Client(firstName, lastName, birthdayDate, clientType);
         create(newClient);
     }
 
