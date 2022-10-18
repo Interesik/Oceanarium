@@ -43,6 +43,7 @@ public class TicketDao implements Dao<Ticket> {
 
     @Override
     public void delete(Ticket ticket) {
+        transaction = em.getTransaction();
         transaction.begin();
         em.remove(ticket);
         transaction.commit();
