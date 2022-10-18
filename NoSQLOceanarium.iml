@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <datasource-mapping>
+          <factory-entry name="NoSQLOceanarium" value="4da33bd9-6544-473d-8599-b591399749a0" />
+          <factory-entry name="thePersistenceUnit" />
+        </datasource-mapping>
+        <naming-strategy-map />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/persistence.xml" />
+      </configuration>
+    </facet>
+  </component>
+</module>
