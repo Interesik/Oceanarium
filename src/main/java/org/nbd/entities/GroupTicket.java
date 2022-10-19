@@ -11,8 +11,7 @@ import java.util.List;
 @Access(AccessType.FIELD)
 public abstract class GroupTicket extends Ticket {
     @NotNull
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Client> clients;
 
     public GroupTicket(Float basePrice, Date visitDate, List<Client> clients) {

@@ -9,4 +9,8 @@ public enum TicketType {
     TicketType(int value) {
         discountValue = value;
     }
+
+    public int getValue() {
+        return discountValue;
+    }
 }
