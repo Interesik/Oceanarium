@@ -2,7 +2,7 @@ package org.nbd.dao;
 
 public interface Dao<T> {
 
-    void create(T obj);
+    long create(T obj);
 
     T read(long id);
 

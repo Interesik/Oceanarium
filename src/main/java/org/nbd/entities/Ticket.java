@@ -1,21 +1,16 @@
 package org.nbd.entities;
 
-import com.sun.istack.NotNull;
-import org.nbd.utils.TicketTypeEnum.TicketDiscount;
-import org.nbd.utils.TicketTypeEnum.TicketSubtype;
-import org.nbd.utils.TicketTypeEnum.TicketType;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "ticket_table")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "id", updatable = false, nullable = false)
     private long ticketID;
 
     @Column(name = "base_price", nullable = false)
@@ -24,32 +19,16 @@ public class Ticket {
     @Column(name = "visit_date", nullable = false)
     private Date visitDate;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tickets")
-    @NotNull
-    private List<Client> clients;
-
-    @Column(name = "ticket_type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TicketType ticketType;
-
-    @Column(name = "ticket_subtype", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TicketSubtype ticketSubtype;
-
-    @Column(name = "ticket_discount", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TicketDiscount ticketDiscount;
+    @Version
+    @Column(name = "version")
+    private long version;
 
     protected Ticket() {
     }
 
-    public Ticket(double basePrice, Date visitDate, List<Client> clients, TicketType ticketType, TicketSubtype ticketSubtype, TicketDiscount ticketDiscount) {
+    public Ticket(double basePrice, Date visitDate) {
         this.basePrice = basePrice;
         this.visitDate = visitDate;
-        this.clients = clients;
-        this.ticketType = ticketType;
-        this.ticketSubtype = ticketSubtype;
-        this.ticketDiscount = ticketDiscount;
     }
 
     public long getTicketID() {
@@ -64,29 +43,7 @@ public class Ticket {
         return visitDate;
     }
 
-    public double getActualPrice() {
-        if (ticketType == TicketType.SINGLE) {
-            SingleTicket singleTicket = new SingleTicket();
-            return singleTicket.applyDiscount();
-        } else {
-            GroupTicket groupTicket = new GroupTicket();
-            return groupTicket.applyDiscount();
-        }
-    }
-
-    public List<Client> getClients() {
-        return clients;
-    }
-
-    public TicketType getTicketType() {
-        return ticketType;
-    }
-
-    public TicketSubtype getTicketSubtype() {
-        return ticketSubtype;
-    }
-
-    public TicketDiscount getTicketDiscount() {
-        return ticketDiscount;
+    public long getVersion() {
+        return version;
     }
 }

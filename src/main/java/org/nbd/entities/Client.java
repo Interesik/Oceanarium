@@ -26,19 +26,20 @@ public class Client {
     @Column(name = "birthday_date", nullable = false)
     private Date birthdayDate;
 
-    @Column(name = "client_type", nullable = false)
+    @Column(name = "client_type")
     @Enumerated(EnumType.STRING)
     private ClientType clientType;
 
-    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "client_tickets",
-            joinColumns = @JoinColumn(name = "client_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id", referencedColumnName = "id"))
-    private List<Ticket> tickets;
+    @OneToMany(mappedBy = "client")
+    @Column(name = "single_tickets")
+    private List<SingleTicket> singleTickets;
+
+    @ManyToMany(mappedBy = "clientsList")
+    @Column(name = "group_tickets")
+    private List<GroupTicket> groupTickets;
 
     @Version
+    @Column(name = "version")
     private long version;
 
     public Client() {
@@ -87,12 +88,20 @@ public class Client {
         this.clientType = clientType;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
+    public List<SingleTicket> getSingleTickets() {
+        return singleTickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
+    public void setSingleTickets(List<SingleTicket> singleTickets) {
+        this.singleTickets = singleTickets;
+    }
+
+    public List<GroupTicket> getGroupTickets() {
+        return groupTickets;
+    }
+
+    public void setGroupTickets(List<GroupTicket> groupTickets) {
+        this.groupTickets = groupTickets;
     }
 
     public int getAge() {

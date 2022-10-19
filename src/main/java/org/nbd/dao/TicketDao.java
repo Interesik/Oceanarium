@@ -1,15 +1,10 @@
 package org.nbd.dao;
 
-import org.nbd.entities.Client;
 import org.nbd.entities.Ticket;
-import org.nbd.utils.TicketTypeEnum.TicketDiscount;
-import org.nbd.utils.TicketTypeEnum.TicketSubtype;
-import org.nbd.utils.TicketTypeEnum.TicketType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.Date;
-import java.util.List;
 
 public class TicketDao implements Dao<Ticket> {
 
@@ -22,15 +17,17 @@ public class TicketDao implements Dao<Ticket> {
 
     @Override
     public Ticket read(long id) {
-        return em.find(Ticket.class, id);
+        return em.getReference(Ticket.class, id);
     }
 
     @Override
-    public void create(Ticket ticket) {
+    public long create(Ticket ticket) {
         transaction = em.getTransaction();
         transaction.begin();
         em.persist(ticket);
         transaction.commit();
+
+        return ticket.getTicketID();
     }
 
     @Override
@@ -49,8 +46,8 @@ public class TicketDao implements Dao<Ticket> {
         transaction.commit();
     }
 
-    public void createNewTicket(double basePrice, Date visitDate, List<Client> clients, TicketType ticketType, TicketSubtype ticketSubtype, TicketDiscount ticketDiscount) {
-        Ticket newTicket = new Ticket(basePrice, visitDate, clients, ticketType, ticketSubtype, ticketDiscount);
-        create(newTicket);
+    public long createNewTicket(double basePrice, Date visitDate) {
+        Ticket newTicket = new Ticket(basePrice, visitDate);
+        return create(newTicket);
     }
 }
