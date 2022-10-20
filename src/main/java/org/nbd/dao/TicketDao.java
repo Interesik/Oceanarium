@@ -5,6 +5,7 @@ import org.nbd.entities.Ticket;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.LockModeType;
+import javax.transaction.Transactional;
 import java.util.Date;
 
 public class TicketDao implements Dao<Ticket> {
@@ -41,8 +42,8 @@ public class TicketDao implements Dao<Ticket> {
     @Override
     public void delete(Ticket ticket) {
         transaction.begin();
-        em.remove(ticket);
         em.lock(ticket, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        em.remove(ticket);
         transaction.commit();
     }
 }

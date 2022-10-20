@@ -1,6 +1,5 @@
 package org.nbd.entities;
 
-import org.hibernate.Transaction;
 import org.junit.jupiter.api.Test;
 import org.nbd.dao.ClientDao;
 import org.nbd.dao.TicketDao;
@@ -30,8 +29,6 @@ class ClientTest {
         CD.createNewClient("Karol", "Kazusek", new Date("4/18/2020"), ClientType.NORMAL);
         CD.createNewClient("Jan", "Kowalski", new Date("4/18/1960"), ClientType.SENIOR);
         Client client = CD.read(1);
-        Client client2 = CD.read(2);
-        Client client3 = CD.read(3);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         assertEquals(client.getTickets().size(), 2);
@@ -80,14 +77,11 @@ class ClientTest {
     }
     @Test
     void LockTest(){
-
         CD.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16), ClientType.STUDENT);
         Client client = CD.read(1);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         assertEquals(client.getTickets().size(), 2);
-        Ticket t1 = new NormalTicket(new Date("11/3/2021"),10.0f,TicketType.NORMAL,client);
-        Ticket t2 = new NormalTicket(new Date("11/3/2221"),11.0f,TicketType.NORMAL,client);
         EntityTransaction transaction1 = em.getTransaction();
         EntityTransaction transaction2 = em2.getTransaction();
         new Thread(() ->{
@@ -103,6 +97,16 @@ class ClientTest {
         new Thread(() ->{
             try {
                 Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            transaction2.begin();
+            em2.find(Ticket.class,2l,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            transaction2.commit();
+        }).start();
+        new Thread(() ->{
+            try {
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
