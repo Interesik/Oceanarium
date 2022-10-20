@@ -42,6 +42,7 @@ public class ClientDao implements Dao<Client> {
     public void delete(Client client) {
         transaction = em.getTransaction();
         transaction.begin();
+        client.removeTicket();
         em.remove(client);
         transaction.commit();
     }

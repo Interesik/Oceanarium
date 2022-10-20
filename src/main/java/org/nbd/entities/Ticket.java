@@ -1,8 +1,8 @@
 package org.nbd.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -10,7 +10,7 @@ import java.util.Date;
 public class Ticket extends AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ticketID;
     private boolean archive = false;
 
@@ -43,6 +43,11 @@ public class Ticket extends AbstractEntity {
 
     public long getTicketID() {
         return ticketID;
+    }
+    public void removeClient(){
+    }
+    public List<Client> getClients(){
+        return null;
     }
     public boolean isArchive() {
         return archive;

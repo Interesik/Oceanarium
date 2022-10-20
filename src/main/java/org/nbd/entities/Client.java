@@ -15,10 +15,10 @@ import java.util.List;
 public class Client extends AbstractEntity{
 
     private ClientType clientType;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long personalID;
     public String firstName;
     @NotNull
@@ -92,13 +92,13 @@ public class Client extends AbstractEntity{
         switch (this.getClientType()) {
             case NORMAL:
                 newTicket = new NormalGroupTicket(visitDate, basePrice, clients);
-                AddTicket(clients,TD,CD,newTicket);
+                addTicket(clients,TD,CD,newTicket);
                 break;
             case STUDENT:
             case REDUCTED:
             case SENIOR:
                 newTicket = new ReductedGroupTicket(visitDate, basePrice, clients);
-                AddTicket(clients,TD,CD,newTicket);
+                addTicket(clients,TD,CD,newTicket);
                 break;
         }
     }
@@ -146,11 +146,6 @@ public class Client extends AbstractEntity{
     public void setBirthdayDate(Date birthdayDate) {
         this.birthdayDate = birthdayDate;
     }
-
-    public long getPersonalID() {
-        return personalID;
-    }
-
     public ClientType getClientType() {
         return clientType;
     }
@@ -158,10 +153,16 @@ public class Client extends AbstractEntity{
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;
     }
-    private void AddTicket(List<Client> clients,TicketDao TD,ClientDao CD,GroupTicket newTicket){
+    private void addTicket(List<Client> clients, TicketDao TD, ClientDao CD, GroupTicket newTicket){
         for(Client c: clients) {
             CD.updateTicketList(c,newTicket);
         }
         TD.create(newTicket);
+    }
+    public void removeTicket(){
+        for(Ticket t : tickets){
+            t.getClients().remove(this);
+        }
+        this.tickets = null;
     }
 }

@@ -21,17 +21,25 @@ public abstract class GroupTicket extends Ticket {
     protected GroupTicket(){
 
     }
-
+    @Override
     public List<Client> getClients() {
         return clients;
     }
     public abstract void addClient(Client newClient);
+    @Override
+    public void removeClient() {
+        for(Client c : clients){
+            c.getTickets().remove(this);
+        }
+        this.clients = null;
+    }
 
     public double getActualPrice() {
         return clients.size() * applyDiscount(getBasePrice());
     }
 
     public abstract double applyDiscount(double basePrice);
+
 
     @Override
     public String toString() {

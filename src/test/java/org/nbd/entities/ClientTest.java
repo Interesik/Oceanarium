@@ -1,5 +1,6 @@
 package org.nbd.entities;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.nbd.dao.ClientDao;
 import org.nbd.dao.TicketDao;
@@ -23,12 +24,17 @@ class ClientTest {
     TicketDao TD2 = new TicketDao(em);
     ClientDao CD = new ClientDao(em);
     ClientDao CD2 = new ClientDao(em);
-    @Test
-    void createNewSingleTicket() {
+    @BeforeEach
+    void setUp() {
         CD.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16), ClientType.STUDENT);
         CD.createNewClient("Karol", "Kazusek", new Date("4/18/2020"), ClientType.NORMAL);
         CD.createNewClient("Jan", "Kowalski", new Date("4/18/1960"), ClientType.SENIOR);
+    }
+    @Test
+    void createNewSingleTicket() {
         Client client = CD.read(1);
+        Client client2 = CD.read(2);
+        Client client3 = CD.read(3);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
         assertEquals(client.getTickets().size(), 2);
@@ -48,9 +54,6 @@ class ClientTest {
     }
     @Test
     void createNewGroupTicket() {
-        CD.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16), ClientType.STUDENT);
-        CD.createNewClient("Karol", "Kazusek", new Date("4/18/2020"), ClientType.NORMAL);
-        CD.createNewClient("Jan", "Kowalski", new Date("4/18/1960"), ClientType.SENIOR);
         Client client = CD.read(1);
         Client client2 = CD.read(2);
         Client client3 = CD.read(3);
@@ -75,13 +78,11 @@ class ClientTest {
         client.createNewGroupTicket(10.0f, new Date(1 / 1 / 1111),clients, TD, CD);
         assertEquals(client.getTickets().size(), 4);
     }
+
+
+
     @Test
     void LockTest(){
-        CD.createNewClient("Olek", "Kobusinski", new Date(1992, Calendar.JUNE, 16), ClientType.STUDENT);
-        Client client = CD.read(1);
-        client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
-        client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
-        assertEquals(client.getTickets().size(), 2);
         EntityTransaction transaction1 = em.getTransaction();
         EntityTransaction transaction2 = em2.getTransaction();
         new Thread(() ->{
@@ -101,7 +102,7 @@ class ClientTest {
                 Thread.currentThread().interrupt();
             }
             transaction2.begin();
-            em2.find(Ticket.class,2l,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            em2.find(Ticket.class,1l,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
             transaction2.commit();
         }).start();
         new Thread(() ->{
@@ -111,7 +112,7 @@ class ClientTest {
                 Thread.currentThread().interrupt();
             }
             transaction2.begin();
-            em2.find(Ticket.class,2l,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+            em2.find(Ticket.class,1l,LockModeType.OPTIMISTIC_FORCE_INCREMENT);
             transaction2.commit();
         }).start();
         try {
@@ -119,5 +120,55 @@ class ClientTest {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    @Test
+    void Update() {
+        Client client = CD.read(1);
+        Client client2 = CD.read(2);
+        client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
+        //updateBasePrice
+        assertEquals(10.0f,client.getTickets().get(0).getBasePrice());
+        client.updateBasePrice(TD.read(1), 20.0f,TD);
+        assertEquals(20.0f,client.getTickets().get(0).getBasePrice());
+        //updateVisitDate
+        assertEquals(client.getTickets().get(0).getVisitDate(),new Date(1 / 1 / 1111));
+        client.updateVisitDate(TD.read(1), new Date(1 / 1 / 2222),TD);
+        assertEquals(client.getTickets().get(0).getVisitDate(),new Date(1 / 1 / 2222));
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+        clients.add(client2);
+        //Test updateRemoveClient
+        assertEquals(0,client2.getTickets().size());
+        client.createNewGroupTicket(10.0f,new Date(1/1/3333),clients,TD,CD);
+        assertEquals(1,client2.getTickets().size());
+        client.updateRemoveClient((GroupTicket) TD.read(2),client2,TD,CD);
+        assertEquals(0,client2.getTickets().size());
+    }
+
+    @Test
+    void Delete() {
+        Client client = CD.read(1);
+        Client client2 = CD.read(2);
+        assertEquals(0,client.getTickets().size());
+        client.createNewSingleTicket(10.0f, new Date(1 / 1 / 1111), TicketType.NORMAL, TD, CD);
+        assertEquals(1,client.getTickets().size());
+        //DeleteSingleTicekt
+        TD.delete(TD.read(1));
+        assertEquals(0,client.getTickets().size());
+        List<Client> clients = new ArrayList<>();
+        clients.add(client);
+        clients.add(client2);
+        assertEquals(0,client2.getTickets().size());
+        assertEquals(0,client.getTickets().size());
+        client.createNewGroupTicket(10.0f,new Date(1/1/3333),clients,TD,CD);
+        assertEquals(1,client2.getTickets().size());
+        assertEquals(1,client.getTickets().size());
+        TD.delete(TD.read(2l));
+        assertEquals(0,client2.getTickets().size());
+        assertEquals(0,client.getTickets().size());
+        client.createNewGroupTicket(10.0f,new Date(1/1/3333),clients,TD,CD);
+        CD.delete(CD.read(2l));
+
     }
 }

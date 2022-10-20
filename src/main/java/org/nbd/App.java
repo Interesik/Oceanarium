@@ -40,8 +40,8 @@ public class App {
         client.createNewSingleTicket(10.0f,d1,TicketType.CITY_CARD,TD,clientDao);
         client.createNewSingleTicket(10.0f,d1,TicketType.CITY_CARD,TD,clientDao);
         client2.createNewGroupTicket(10.0f,d1,clients,TD,clientDao);
-        TD.delete(TD.read(4));
-        clientDao.delete(clientDao.read(1l));
+        TD.delete(TD.read(1));
+        clientDao.delete(clientDao.read(1));
 
     }
 }

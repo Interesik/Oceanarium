@@ -3,7 +3,10 @@ package org.nbd.entities;
 import org.nbd.utils.TicketType;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Access(AccessType.FIELD)
 public abstract class SingleTicket extends Ticket {
@@ -22,6 +25,17 @@ public abstract class SingleTicket extends Ticket {
     }
 
     public abstract double applyDiscount(double basePrice);
+    @Override
+    public void removeClient() {
+        client.getTickets().remove(this);
+        this.client = null;
+    }
+    @Override
+    public List<Client> getClients() {
+        List<Client> c = new ArrayList<>();
+        c.add(client);
+        return c;
+    }
 
     public double getActualPrice() {
         return applyDiscount(getBasePrice());
