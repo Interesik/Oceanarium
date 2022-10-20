@@ -40,7 +40,6 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public void delete(Client client) {
-        em.lock(client, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         transaction.begin();
         em.remove(client);
         transaction.commit();
@@ -62,5 +61,5 @@ public class ClientDao implements Dao<Client> {
     public void updateBirthdayDate(Client client, Date date) {
         update(() -> client.setBirthdayDate(date));
     }
-    public void updateTicketList(Client client, Ticket ticket){update(() -> client.getTickets().add(ticket));}
+    public void updateTicketList(Client client, Ticket ticket) { update(() -> client.getTickets().add(ticket));}
 }
