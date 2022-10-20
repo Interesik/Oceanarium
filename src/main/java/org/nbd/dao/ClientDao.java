@@ -40,6 +40,7 @@ public class ClientDao implements Dao<Client> {
 
     @Override
     public void delete(Client client) {
+        transaction = em.getTransaction();
         transaction.begin();
         em.remove(client);
         transaction.commit();
