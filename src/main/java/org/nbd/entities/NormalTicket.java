@@ -6,7 +6,6 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Date;
 @Entity
-@DiscriminatorValue("Normal")
 public class NormalTicket extends SingleTicket {
     public NormalTicket(Date visitDate, Float basePrice, TicketType ticketType, Client client) {
         super(visitDate, basePrice, ticketType, client);

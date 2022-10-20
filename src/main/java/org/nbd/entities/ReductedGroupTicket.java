@@ -2,12 +2,17 @@ package org.nbd.entities;
 
 import org.nbd.utils.ClientType;
 
+import javax.persistence.Entity;
 import java.util.Date;
 import java.util.List;
-
+@Entity
 public class ReductedGroupTicket extends GroupTicket{
     public ReductedGroupTicket(Date visitDate, Float basePrice, List<Client> clients) {
         super(basePrice, visitDate, clients);
+    }
+
+    protected ReductedGroupTicket() {
+
     }
 
     @Override

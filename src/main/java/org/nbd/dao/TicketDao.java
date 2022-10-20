@@ -4,6 +4,7 @@ import org.nbd.entities.Ticket;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.LockModeType;
 import java.util.Date;
 
 public class TicketDao implements Dao<Ticket> {
@@ -25,6 +26,7 @@ public class TicketDao implements Dao<Ticket> {
         transaction = em.getTransaction();
         transaction.begin();
         em.persist(ticket);
+        em.lock(ticket, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         transaction.commit();
     }
 
@@ -40,19 +42,7 @@ public class TicketDao implements Dao<Ticket> {
     public void delete(Ticket ticket) {
         transaction.begin();
         em.remove(ticket);
+        em.lock(ticket, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
         transaction.commit();
-    }
-
-    public void createNewTicket(Float basePrice, Date visitDate) {
-        Ticket newTicket = new Ticket(basePrice, visitDate);
-        create(newTicket);
-    }
-
-    public void updateBasePrice(Ticket ticket, Float basePrice) {
-        update(() -> ticket.setBasePrice(basePrice));
-    }
-
-    public void updateVisitDate(Ticket ticket, Date date) {
-        update(() -> ticket.setVisitDate(date));
     }
 }
